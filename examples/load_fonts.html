@@ -1,0 +1,30 @@
+<html>
+	<head>
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap" rel="stylesheet"> 
+
+		<title>Detect Fonts</title>
+	</head>
+	<body>
+		
+		<div id="fontlist"></div>
+		
+		<script src="../canvas-type.js"></script>
+		<script>
+			
+			(async ()=>{
+				
+				var fonts = await CTFonts.getAvailable();
+				
+				document.getElementById("fontlist").innerHTML = fonts.map(f=>`<div style='font-family: "${f}"'>${f}</div>`).join('');
+				
+				
+			})();
+				
+			
+			
+		</script>
+	</body>
+</html>
