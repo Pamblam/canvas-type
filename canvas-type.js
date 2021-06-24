@@ -7,6 +7,14 @@
  */
 
 
+class CanvasType{
+	
+	constructor(opts){
+		
+	}
+	
+}
+
 class CTFonts{}
 
 CTFonts.getNative = async (force_recheck = false) => {

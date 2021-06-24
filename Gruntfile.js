@@ -14,6 +14,7 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				src: [
+					'src/CanvasType.js',
 					'src/CTFonts.js',
 					'src/fonts-array.js'
 				],
