@@ -7,129 +7,18 @@
 	</head>
 	<body>
 		<textarea id=ta></textarea>
-		
+		<script src="../src/CTKeyLogger.js"></script>
 		
 		<script>
 			
-			var input = [];
-			var cursor_pos = 0;
-
-			document.getElementById('ta').addEventListener('keydown', function(e) {
-
-				var named_input_keys = {Enter: "\n", Tab: "\t"};
-
-				var control_keys = ['ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowUp',
-					'End', 'Home', 'Backspace', 'Delete'];
-
-				var non_input_keys = ['Unidentified', 'Alt', 'AltGraph', 'CapsLock', 'Control',
-					'Fn', 'FnLock', 'Hyper', 'Meta', 'NumLock', 'ScrollLock', 'Shift', 'Super',
-					'Symbol', 'SymbolLock', 'PageDown', 'PageUp', 'Clear', 'Copy', 'CrSel',
-					'Cut', 'EraseEof', 'ExSel', 'Insert', 'Paste', 'Redo', 'Undo', 'Accept',
-					'Again', 'Attn', 'Cancel', 'ContextMenu', 'Escape', 'Execute', 'Find',
-					'Finish', 'Help', 'Pause', 'Play', 'Props', 'Select', 'ZoomIn', 'ZoomOut',
-					'BrightnessDown', 'BrightnessUp', 'Eject', 'LogOff', 'Power', 'PowerOff',
-					'PrintScreen', 'Hibernate', 'Standby', 'WakeUp', 'AllCandidates', 'Alphanumeric',
-					'CodeInput', 'Compose', 'Convert', 'Dead', 'FinalMode', 'GroupFirst', 'GroupLast',
-					'GroupNext', 'GroupPrevious', 'ModeChange', 'NextCandidate', 'NonConvert',
-					'PreviousCandidate', 'Process', 'SingleCandidate', 'HangulMode', 'HanjaMode',
-					'JunjaMode', 'Eisu', 'Hankaku', 'Hiragana', 'HiraganaKatakana', 'KanaMode',
-					'KanjiMode', 'Katakana', 'Romaji', 'Zenkaku', 'ZenkakuHanaku', 'F1',
-					'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
-					'F13', 'F14', 'F15', 'F16', 'F17', 'F18', 'F19', 'F20', 'Soft1', 'Soft2',
-					'Soft3', 'Soft4', 'AppSwitch', 'Call', 'Camera', 'CameraFocus', 'EndCall',
-					'GoBack', 'GoHome', 'HeadsetHook', 'LastNumberRedial', 'Notification',
-					'MannerMode', 'VoiceDial', 'ChannelDown', 'ChannelUp', 'MediaFastForward',
-					'MediaPause', 'MediaPlay', 'MediaPlayPause', 'MediaRecord', 'MediaRewind',
-					'MediaStop', 'MediaTrackNext', 'MediaTrackPrevious', 'AudioBalanceLeft',
-					'AudioBalanceRight', 'AudioBassDown', 'AudioBassBoostDown', 'AudioBassBoostToggle',
-					'AudioBassBoostUp', 'AudioBassUp', 'AudioFaderFront', 'AudioFaderRear',
-					'AudioSurroundModeNext', 'AudioTrebleDown', 'AudioTrebleUp', 'AudioVolumeDown',
-					'AudioVolumeMute', 'AudioVolumeUp', 'MicrophoneToggle', 'MicrophoneVolumeDown',
-					'MicrophoneVolumeMute', 'MicrophoneVolumeUp', 'TV', 'TV3DMode', 'TVAntennaCable',
-					'TVAudioDescription', 'TVAudioDescriptionMixDown', 'TVAudioDescriptionMixUp',
-					'TVContentsMenu', 'TVDataService', 'TVInput', 'TVInputComponent1', 'TVInputComponent2',
-					'TVInputComposite1', 'TVInputComposite2', 'TVInputHDMI1', 'TVInputHDMI2',
-					'TVInputHDMI3', 'TVInputHDMI4', 'TVInputVGA1', 'TVMediaContext', 'TVNetwork',
-					'TVNumberEntry', 'TVPower', 'TVRadioService', 'TVSatellite', 'TVSatelliteBS',
-					'TVSatelliteCS', 'TVSatelliteToggle', 'TVTerrestrialAnalog', 'TVTerrestrialDigital',
-					'TVTimer', 'AVRInput', 'AVRPower', 'ColorF0Red', 'ColorF1Green', 'ColorF2Yellow',
-					'ColorF3Blue', 'ColorF4Grey', 'ColorF5Brown', 'ClosedCaptionToggle',
-					'Dimmer', 'DisplaySwap', 'DVR', 'Exit', 'FavoriteClear0', 'FavoriteClear1',
-					'FavoriteClear2', 'FavoriteClear3', 'FavoriteRecall0', 'FavoriteRecall1',
-					'FavoriteRecall2', 'FavoriteRecall3', 'FavoriteStore0', 'FavoriteStore1',
-					'FavoriteStore2', 'FavoriteStore3', 'Guide', 'GuideNextDay', 'GuidePreviousDay',
-					'Info', 'InstantReplay', 'Link', 'ListProgram', 'LiveContent', 'Lock',
-					'MediaApps', 'MediaAudioTrack', 'MediaLast', 'MediaSkipBackward', 'MediaSkipForward',
-					'MediaStepBackward', 'MediaStepForward', 'MediaTopMenu', 'NavigateIn',
-					'NavigateNext', 'NavigateOut', 'NavigatePrevious', 'NextFavoriteChannel',
-					'NextUserProfile', 'OnDemand', 'Pairing', 'PinPDown', 'PinPMove', 'PinPToggle',
-					'PinPUp', 'PlaySpeedDown', 'PlaySpeedReset', 'PlaySpeedUp', 'RandomToggle',
-					'RcLowBattery', 'RecordSpeedNext', 'RfBypass', 'ScanChannelsToggle',
-					'ScreenModeNext', 'Settings', 'SplitScreenToggle', 'STBInput', 'STBPower',
-					'Subtitle', 'Teletext', 'VideoModeNext', 'Wink', 'ZoomToggle', 'SpeechCorrectionList',
-					'SpeechInputToggle', 'Close', 'New', 'Open', 'Print', 'Save', 'SpellCheck',
-					'MailForward', 'MailReply', 'MailSend', 'LaunchCalculator', 'LaunchCalendar',
-					'LaunchContacts', 'LaunchMail', 'LaunchMediaPlayer', 'LaunchMusicPlayer',
-					'LaunchMyComputer', 'LaunchPhone', 'LaunchScreenSaver', 'LaunchSpreadsheet',
-					'LaunchWebBrowser', 'LaunchWebCam', 'LaunchWordProcessor', 'LaunchApplication1',
-					'LaunchApplication2', 'LaunchApplication3', 'LaunchApplication4', 'LaunchApplication5',
-					'LaunchApplication6', 'LaunchApplication7', 'LaunchApplication8', 'LaunchApplication9',
-					'LaunchApplication10', 'LaunchApplication11', 'LaunchApplication12', 'LaunchApplication13',
-					'LaunchApplication14', 'LaunchApplication15', 'LaunchApplication16', 'BrowserBack',
-					'BrowserFavorites', 'BrowserForward', 'BrowserHome', 'BrowserRefresh', 'BrowserSearch',
-					'BrowserStop', 'Decimal', 'Key11', 'Key12', 'Multiply', 'Add', 'Clear',
-					'Divide', 'Subtract', 'Separator'
-				];
-
-				if(named_input_keys[e.key]){
-					input.splice(cursor_pos, 0, named_input_keys[e.key]);
-					cursor_pos++;
-				}else if(control_keys.includes(e.key)){
-					switch(e.key){
-						case 'ArrowDown': break;
-						case 'ArrowLeft':
-							if(cursor_pos > 0){
-								cursor_pos--;
-							}
-							break;
-						case 'ArrowRight':
-							if(input.length - 1 > cursor_pos){
-								cursor_pos++;
-							}
-							break;
-						case 'ArrowUp': break;
-						case 'End':
-							cursor_pos = input.length - 1;
-							break;
-						case 'Home':
-							cursor_pos = 0;
-							break;
-						case 'Backspace':
-							if(cursor_pos > 0){
-								input.splice(cursor_pos-1, 1);
-								cursor_pos--;
-							}
-							break;
-						case 'Delete':
-							if(input.length - 1 > cursor_pos){
-								input.splice(cursor_pos, 1);
-							}
-							break;
-					}
-				}else if(!non_input_keys.includes(e.key)){
-					input.splice(cursor_pos, 0, e.key);
-					cursor_pos++;
+			var kl = new CTKeyLogger({
+				element: document.getElementById('ta'),
+				on_input(){
+					console.clear();
+					console.log(this.val(true, '|').join(''))
 				}
-
-				// Rendering the input "value"
-				var value = [];
-				for(var i=0; i<input.length; i++){
-					if(i == cursor_pos) value.push("|");
-					value.push(input[i]);
-				}
-				console.log(value.join(''));
-
 			});
+
 
 			
 			

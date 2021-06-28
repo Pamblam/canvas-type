@@ -1,16 +1,47 @@
 /**
- * canvas-type - v1.0.0
- * 
- * @author 
- * @website 
- * @license ISC
+ * canvas-type - v0.0.1
+ * An attempt to replicate the text input box from GIMP on an HTML5 canvas.
+ * @author Rob Parham
+ * @website https://pamblam.github.io/canvas-type/
+ * @license MIT
  */
 
+const CanvasType = (()=>{
 
 class CanvasType{
 	
-	constructor(opts){
+	constructor(canvas, opt){
+		this.active = false;
+		this.text = '';
+		this.canvas = canvas;
 		
+		this.typeArea = {};
+		this.typeArea.width = opt.typeArea.width || canvas.width;
+		this.typeArea.height = opt.typeArea.height || canvas.height;
+		this.typeArea.x = opt.typeArea.x || 0;
+		this.typeArea.y = opt.typeArea.y || 0;
+		
+		this._keydownHandler = this.keydownHandler.bind(this);
+		this.attachEventHandlers();
+	}
+	
+	setTypeArea(x, y, w, h){
+		this.typeArea.width = w;
+		this.typeArea.height = h;
+		this.typeArea.x = x;
+		this.typeArea.y = y;
+	}
+	
+	keydownHandler(){
+		
+	}
+	
+	attachEventHandlers(){
+		this.canvas.addEventListener(this._keydownHandler);
+	}
+	
+	removeEventHandlers(){
+		this.canvas.removeEventListener(this._keydownHandler);
 	}
 	
 }
@@ -390,3 +421,8 @@ CTFonts._native_fontlist = [
 	'Zapf Dingbats',
 	'Zapfino',
 ];
+
+	CanvasType.KeyLogger = CTKeyLogger;
+	CanvasType.Fonts = CTFonts;
+	return CanvasType;
+})();

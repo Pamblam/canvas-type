@@ -14,13 +14,51 @@ module.exports = function (grunt) {
 			},
 			dist: {
 				src: [
+					'src/lib_header.js',
 					'src/CanvasType.js',
 					'src/CTFonts.js',
-					'src/fonts-array.js'
+					'src/fonts-array.js',
+					'src/lib_footer.js',
 				],
 				dest: 'canvas-type.js',
 			},
+		},
+		
+		'string-replace': {
+			source: {
+				files: {
+					"canvas-type.js": "canvas-type.js"
+				},
+				options: {
+					replacements: [{
+						pattern: /{{ VERSION }}/g,
+						replacement: '<%= pkg.version %>'
+					}]
+				}
+			},
+			readme: {
+				files: {
+					"README.md": "README.md"
+				},
+				options: {
+					replacements: [{
+						pattern: /\d*\.\d*\.\d*/g,
+						replacement: '<%= pkg.version %>'
+					}]
+				}
+			}
+		},
+		
+		uglify: {
+			options: {
+				banner: '/*! <%= pkg.name %> - v<%= pkg.version %> */'
+			},
+			build: {
+				src: 'canvas-type.js',
+				dest: 'canvas-type.min.js'
+			}
 		}
+		
 	});
 
 	grunt.registerTask('build-font-list', 'Generate docs', function () {
@@ -79,12 +117,28 @@ module.exports = function (grunt) {
 		});
 		
 	});
+	
+	grunt.registerTask('update-version', 'Generate docs', function () {
+		var pkg = grunt.file.readJSON('package.json');
+		pkg.version = pkg.version.split(".");
+		var subversion = pkg.version.pop();
+		subversion++;
+		pkg.version.push(subversion);
+		pkg.version = pkg.version.join(".");
+		grunt.file.write('package.json', JSON.stringify(pkg, null, 2));
+	});
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-string-replace');
+	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	
 	grunt.registerTask('default', [
+		'update-version',
 		'build-font-list',
-		'concat'
+		'concat',
+		'string-replace:source',
+		'string-replace:readme',
+		'uglify'
 	]);
 
 };
